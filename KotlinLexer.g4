@@ -45,7 +45,7 @@ LCURL: '{' -> pushMode(DEFAULT_MODE);
  * When using another programming language (not Java) to generate a parser,
  * please replace this code with the corresponding code of a programming language you are using.
  */
-RCURL: '}' { if (!_modeStack.isEmpty()) { popMode(); } };
+RCURL: '}' { if len(this.ModeStack) > 0 { this.PopMode(); } };
 MULT: '*';
 MOD: '%';
 DIV: '/';

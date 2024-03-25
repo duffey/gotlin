@@ -45,7 +45,7 @@ topLevelObject
     ;
 
 typeAlias
-    : modifiers? TYPE_ALIAS NL* simpleIdentifier (NL* typeParameters)? NL* ASSIGNMENT NL* type
+    : modifiers? TYPE_ALIAS NL* simpleIdentifier (NL* typeParameters)? NL* ASSIGNMENT NL* k_type
     ;
 
 declaration
@@ -79,7 +79,7 @@ classParameters
     ;
 
 classParameter
-    : modifiers? (VAL | VAR)? NL* simpleIdentifier COLON NL* type (NL* ASSIGNMENT NL* expression)?
+    : modifiers? (VAL | VAR)? NL* simpleIdentifier COLON NL* k_type (NL* ASSIGNMENT NL* expression)?
     ;
 
 delegationSpecifiers
@@ -111,7 +111,7 @@ typeParameters
     ;
 
 typeParameter
-    : typeParameterModifiers? NL* simpleIdentifier (NL* COLON NL* type)?
+    : typeParameterModifiers? NL* simpleIdentifier (NL* COLON NL* k_type)?
     ;
 
 typeConstraints
@@ -119,7 +119,7 @@ typeConstraints
     ;
 
 typeConstraint
-    : annotation* simpleIdentifier NL* COLON NL* type
+    : annotation* simpleIdentifier NL* COLON NL* k_type
     ;
 
 // SECTION: classMembers
@@ -158,7 +158,7 @@ functionDeclaration
     : modifiers?
       FUN (NL* typeParameters)? (NL* receiverType NL* DOT)? NL* simpleIdentifier
       NL* functionValueParameters
-      (NL* COLON NL* type)?
+      (NL* COLON NL* k_type)?
       (NL* typeConstraints)?
       (NL* functionBody)?
     ;
@@ -169,7 +169,7 @@ functionBody
     ;
 
 variableDeclaration
-    : annotation* NL* simpleIdentifier (NL* COLON NL* type)?
+    : annotation* NL* simpleIdentifier (NL* COLON NL* k_type)?
     ;
 
 multiVariableDeclaration
@@ -192,12 +192,12 @@ propertyDelegate
 
 getter
     : modifiers? GET
-      (NL* LPAREN NL* RPAREN (NL* COLON NL* type)? NL* functionBody)?
+      (NL* LPAREN NL* RPAREN (NL* COLON NL* k_type)? NL* functionBody)?
     ;
 
 setter
     : modifiers? SET
-      (NL* LPAREN NL* functionValueParameterWithOptionalType (NL* COMMA)? NL* RPAREN (NL* COLON NL* type)? NL* functionBody)?
+      (NL* LPAREN NL* functionValueParameterWithOptionalType (NL* COMMA)? NL* RPAREN (NL* COLON NL* k_type)? NL* functionBody)?
     ;
 
 parametersWithOptionalType
@@ -209,11 +209,11 @@ functionValueParameterWithOptionalType
     ;
 
 parameterWithOptionalType
-    : simpleIdentifier NL* (COLON NL* type)?
+    : simpleIdentifier NL* (COLON NL* k_type)?
     ;
 
 parameter
-    : simpleIdentifier NL* COLON NL* type
+    : simpleIdentifier NL* COLON NL* k_type
     ;
 
 objectDeclaration
@@ -247,7 +247,7 @@ enumEntry
 
 // SECTION: types
 
-type
+k_type
     : typeModifiers? (functionType | parenthesizedType | nullableType | typeReference | definitelyNonNullableType)
     ;
 
@@ -274,7 +274,7 @@ simpleUserType
     ;
 
 typeProjection
-    : typeProjectionModifiers? type
+    : typeProjectionModifiers? k_type
     | MULT
     ;
 
@@ -288,15 +288,15 @@ typeProjectionModifier
     ;
 
 functionType
-    : (receiverType NL* DOT NL*)? functionTypeParameters NL* ARROW NL* type
+    : (receiverType NL* DOT NL*)? functionTypeParameters NL* ARROW NL* k_type
     ;
 
 functionTypeParameters
-    : LPAREN NL* (parameter | type)? (NL* COMMA NL* (parameter | type))* (NL* COMMA)? NL* RPAREN
+    : LPAREN NL* (parameter | k_type)? (NL* COMMA NL* (parameter | k_type))* (NL* COMMA)? NL* RPAREN
     ;
 
 parenthesizedType
-    : LPAREN NL* type NL* RPAREN
+    : LPAREN NL* k_type NL* RPAREN
     ;
 
 receiverType
@@ -392,7 +392,7 @@ genericCallLikeComparison
     ;
 
 infixOperation
-    : elvisExpression (inOperator NL* elvisExpression | isOperator NL* type)*
+    : elvisExpression (inOperator NL* elvisExpression | isOperator NL* k_type)*
     ;
 
 elvisExpression
@@ -420,7 +420,7 @@ multiplicativeExpression
     ;
 
 asExpression
-    : prefixUnaryExpression (NL* asOperator NL* type)*
+    : prefixUnaryExpression (NL* asOperator NL* k_type)*
     ;
 
 prefixUnaryExpression
@@ -578,16 +578,16 @@ lambdaParameters
 
 lambdaParameter
     : variableDeclaration
-    | multiVariableDeclaration (NL* COLON NL* type)?
+    | multiVariableDeclaration (NL* COLON NL* k_type)?
     ;
 
 anonymousFunction
     : SUSPEND?
       NL*
       FUN
-      (NL* type NL* DOT)?
+      (NL* k_type NL* DOT)?
       NL* parametersWithOptionalType
-      (NL* COLON NL* type)?
+      (NL* COLON NL* k_type)?
       (NL* typeConstraints)?
       (NL* functionBody)?
     ;
@@ -607,7 +607,7 @@ thisExpression
     ;
 
 superExpression
-    : SUPER (LANGLE NL* type NL* RANGLE)? (AT_NO_WS simpleIdentifier)?
+    : SUPER (LANGLE NL* k_type NL* RANGLE)? (AT_NO_WS simpleIdentifier)?
     | SUPER_AT
     ;
 
@@ -642,7 +642,7 @@ rangeTest
     ;
 
 typeTest
-    : isOperator NL* type
+    : isOperator NL* k_type
     ;
 
 tryExpression
@@ -650,7 +650,7 @@ tryExpression
     ;
 
 catchBlock
-    : CATCH NL* LPAREN annotation* simpleIdentifier COLON type (NL* COMMA)? RPAREN NL* block
+    : CATCH NL* LPAREN annotation* simpleIdentifier COLON k_type (NL* COMMA)? RPAREN NL* block
     ;
 
 finallyBlock
